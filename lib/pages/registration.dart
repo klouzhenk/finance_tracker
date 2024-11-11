@@ -1,23 +1,24 @@
-import 'package:finance_tracker/pages/registration.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
 
   @override
-  LoginPageState createState() {
-    return LoginPageState();
+  RegistrationPageState createState() {
+    return RegistrationPageState();
   }
 }
 
-class LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
+class RegistrationPageState extends State<RegistrationPage> {
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -31,21 +32,21 @@ class LoginPageState extends State<LoginPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Finance Tracker',
+                'Create an Account',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 8),
               Text(
-                'Login',
+                'Registration',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: const Color.fromARGB(197, 0, 0, 0),
                     ),
               ),
               const SizedBox(height: 32),
               TextField(
-                controller: _emailController,
+                controller: _usernameController,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'Username',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -58,16 +59,21 @@ class LoginPageState extends State<LoginPage> {
                   border: OutlineInputBorder(),
                 ),
               ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(),
+                ),
+              ),
               const SizedBox(height: 4),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegistrationPage()),
-                  );
+                  Navigator.pop(context); // Повернення на сторінку входу
                 },
-                child: const Text("Don't have an account? Sign up"),
+                child: const Text("Already have an account? Login"),
               ),
               const SizedBox(height: 20),
               Padding(
@@ -76,14 +82,14 @@ class LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Логіка входу
+                      // Логіка реєстрації
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text('Login'),
+                    child: const Text('Sign Up'),
                   ),
                 ),
               ),
