@@ -1,3 +1,5 @@
+import 'package:finance_tracker/database/helper.dart';
+import 'package:finance_tracker/pages/home.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -81,15 +83,24 @@ class RegistrationPageState extends State<RegistrationPage> {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Логіка реєстрації
+                    onPressed: () async {
+                      final username = _usernameController.text;
+                      final password = _passwordController.text;
+
+                      await DatabaseHelper.instance
+                          .insertUser(username, password);
+
+                      // Check if the widget is still mounted before using context
+                      if (mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      }
                     },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text('Sign Up'),
+                    child: const Text('Sign up'),
                   ),
                 ),
               ),
