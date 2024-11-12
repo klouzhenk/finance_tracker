@@ -43,6 +43,16 @@ class DatabaseHelper {
     );
   }
 
+  Future<bool> checkUser(String username, String password) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'users',
+      where: 'username = ? AND password = ?',
+      whereArgs: [username, password],
+    );
+    return result.isNotEmpty;
+  }
+
   Future<void> close() async {
     final db = await instance.database;
     db.close();

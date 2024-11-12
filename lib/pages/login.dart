@@ -1,3 +1,6 @@
+import 'package:finance_tracker/components/form_text_field.dart';
+import 'package:finance_tracker/database/helper.dart';
+import 'package:finance_tracker/pages/home.dart';
 import 'package:finance_tracker/pages/registration.dart';
 import 'package:flutter/material.dart';
 
@@ -42,21 +45,15 @@ class LoginPageState extends State<LoginPage> {
                     ),
               ),
               const SizedBox(height: 32),
-              TextField(
+              CustomTextField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
+                labelText: 'Email',
               ),
               const SizedBox(height: 10),
-              TextField(
+              CustomTextField(
                 controller: _passwordController,
+                labelText: 'Password',
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
               ),
               const SizedBox(height: 4),
               TextButton(
@@ -73,19 +70,33 @@ class LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Логіка входу
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text('Login'),
-                  ),
-                ),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final username = _emailController.text;
+                        final password = _passwordController.text;
+
+                        final isValidUser = await DatabaseHelper.instance
+                            .checkUser(username, password);
+
+                        if (isValidUser) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const AlertDialog(
+                              title: Text('Login Failed'),
+                              content: Text('Invalid username or password.'),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Login'),
+                    )),
               ),
             ],
           ),
