@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/pages/home.dart';
@@ -16,6 +17,29 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  Future<void> onLogin() async {
+    final username = _emailController.text;
+    final password = _passwordController.text;
+
+    final isValidUser =
+        await DatabaseHelper.instance.checkUser(username, password);
+
+    if (isValidUser) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text('Login Failed'),
+          content: Text('Invalid username or password.'),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -70,33 +94,12 @@ class LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final username = _emailController.text;
-                        final password = _passwordController.text;
-
-                        final isValidUser = await DatabaseHelper.instance
-                            .checkUser(username, password);
-
-                        if (isValidUser) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()),
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const AlertDialog(
-                              title: Text('Login Failed'),
-                              content: Text('Invalid username or password.'),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Login'),
-                    )),
+                  width: double.infinity,
+                  child: FormButtonSubmit(
+                    onPressed: onLogin,
+                    text: 'Login',
+                  ),
+                ),
               ),
             ],
           ),

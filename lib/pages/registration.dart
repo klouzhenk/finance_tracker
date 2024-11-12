@@ -1,3 +1,5 @@
+import 'package:finance_tracker/components/form_btn.dart';
+import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/pages/home.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,23 @@ class RegistrationPageState extends State<RegistrationPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  Future<void> onSignUp() async {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+
+    await DatabaseHelper.instance.insertUser(username, password);
+
+    // Check if the widget is still mounted before using context
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -45,30 +64,21 @@ class RegistrationPageState extends State<RegistrationPage> {
                     ),
               ),
               const SizedBox(height: 32),
-              TextField(
+              CustomTextField(
                 controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
-                ),
+                labelText: 'Username',
               ),
               const SizedBox(height: 10),
-              TextField(
+              CustomTextField(
                 controller: _passwordController,
+                labelText: 'Password',
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
               ),
               const SizedBox(height: 10),
-              TextField(
+              CustomTextField(
                 controller: _confirmPasswordController,
+                labelText: 'Confirm Password',
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: OutlineInputBorder(),
-                ),
               ),
               const SizedBox(height: 4),
               TextButton(
@@ -82,25 +92,9 @@ class RegistrationPageState extends State<RegistrationPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final username = _usernameController.text;
-                      final password = _passwordController.text;
-
-                      await DatabaseHelper.instance
-                          .insertUser(username, password);
-
-                      // Check if the widget is still mounted before using context
-                      if (mounted) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Sign up'),
+                  child: FormButtonSubmit(
+                    onPressed: onSignUp,
+                    text: 'Sign Up',
                   ),
                 ),
               ),
