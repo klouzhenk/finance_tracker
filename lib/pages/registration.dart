@@ -3,6 +3,7 @@ import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/pages/home.dart';
+import 'package:finance_tracker/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -101,7 +102,10 @@ class RegistrationPageState extends State<RegistrationPage> {
               const SizedBox(height: 4),
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context); // Повернення на сторінку входу
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
                 },
                 child: const Text("Already have an account? Login"),
               ),

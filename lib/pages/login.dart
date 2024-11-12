@@ -1,6 +1,7 @@
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/database/helper.dart';
+import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/pages/home.dart';
 import 'package:finance_tracker/pages/registration.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,9 @@ class LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-          title: Text('Login Failed'),
-          content: Text('Invalid username or password.'),
-        ),
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBarHelper.createSnackBar(text: 'Invalid username or password'),
       );
     }
   }
@@ -82,7 +80,7 @@ class LoginPageState extends State<LoginPage> {
               const SizedBox(height: 4),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const RegistrationPage()),

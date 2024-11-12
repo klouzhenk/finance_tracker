@@ -5,6 +5,7 @@ class SnackBarHelper {
     return SnackBar(
       content: Text(text),
       backgroundColor: const Color.fromARGB(255, 82, 125, 255),
+      duration: const Duration(seconds: 1),
     );
   }
 }
