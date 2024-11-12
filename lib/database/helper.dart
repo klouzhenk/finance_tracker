@@ -53,6 +53,16 @@ class DatabaseHelper {
     return result.isNotEmpty;
   }
 
+  Future<bool> checkUserExisting(String username) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'users',
+      where: 'username = ?',
+      whereArgs: [username],
+    );
+    return result.isNotEmpty;
+  }
+
   Future<void> close() async {
     final db = await instance.database;
     db.close();

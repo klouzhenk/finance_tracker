@@ -1,5 +1,6 @@
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
+import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/pages/home.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,29 @@ class RegistrationPageState extends State<RegistrationPage> {
   Future<void> onSignUp() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
+    final confirmedPassword = _confirmPasswordController.text;
+
+    if (password != confirmedPassword) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBarHelper.createSnackBar(text: 'Passwords are not the same'),
+      );
+      return;
+    }
+
+    bool userExists = await DatabaseHelper.instance.checkUserExisting(username);
+    if (userExists) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBarHelper.createSnackBar(text: 'Username already taken'),
+      );
+      return;
+    }
 
     await DatabaseHelper.instance.insertUser(username, password);
 
-    // Check if the widget is still mounted before using context
     if (mounted) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const HomePage(),
