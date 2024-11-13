@@ -1,4 +1,5 @@
 import 'package:finance_tracker/pages/login.dart';
+import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,12 +14,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primaryColor,
+          surface: AppColors.backgroundColor,
+          primary: AppColors.primaryColor,
+          onPrimary: AppColors.buttonTextColor,
+        ),
         useMaterial3: true,
         textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Colors.black87),
-          labelLarge:
-              TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),
+          bodyMedium: TextStyle(color: AppColors.textColor),
+          labelLarge: TextStyle(
+            color: AppColors.accentColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       home: const LoginPage(),

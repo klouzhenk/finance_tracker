@@ -1,3 +1,4 @@
+import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -19,7 +20,18 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
-        border: const OutlineInputBorder(),
+        labelStyle: const TextStyle(
+          color: AppColors.primaryColor,
+        ),
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor),
+        ),
+        disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor),
+        ),
       ),
     );
   }

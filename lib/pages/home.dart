@@ -1,3 +1,4 @@
+import 'package:finance_tracker/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,9 +21,12 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Додаткова логіка чи перехід до іншої сторінки
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
               },
-              child: const Text('Explore'),
+              child: const Text('Logout'),
             ),
           ],
         ),

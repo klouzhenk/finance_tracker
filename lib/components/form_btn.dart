@@ -1,8 +1,9 @@
+import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class FormButtonSubmit extends StatelessWidget {
   final String text;
-  final Function() onPressed;
+  final VoidCallback onPressed;
 
   const FormButtonSubmit({
     super.key,
@@ -17,11 +18,16 @@ class FormButtonSubmit extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.accentColor,
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: Text(text),
+        child: Text(
+          text,
+          style: const TextStyle(color: AppColors.buttonTextColor),
+        ),
       ),
     );
   }
