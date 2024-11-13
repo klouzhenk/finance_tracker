@@ -23,6 +23,12 @@ class LoginPageState extends State<LoginPage> {
     final username = _emailController.text;
     final password = _passwordController.text;
 
+    if (username.isEmpty || password.isEmpty) {
+      SnackBarHelper.showSnackBar(
+          context: context, text: 'Please enter both username and password');
+      return;
+    }
+
     final isValidUser =
         await DatabaseHelper.instance.checkUser(username, password);
 
@@ -32,10 +38,8 @@ class LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBarHelper.createSnackBar(text: 'Invalid username or password'),
-      );
+      SnackBarHelper.showSnackBar(
+          context: context, text: 'Invalid username or password');
     }
   }
 
@@ -57,16 +61,9 @@ class LoginPageState extends State<LoginPage> {
             children: [
               Text(
                 'Finance Tracker',
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Login',
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: const Color.fromARGB(197, 0, 0, 0),
-                    ),
-              ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
               CustomTextField(
                 controller: _emailController,
                 labelText: 'Email',
@@ -88,7 +85,7 @@ class LoginPageState extends State<LoginPage> {
                 },
                 child: const Text("Don't have an account? Sign up"),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SizedBox(

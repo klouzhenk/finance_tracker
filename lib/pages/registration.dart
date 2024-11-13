@@ -1,5 +1,6 @@
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
+import 'package:finance_tracker/helper/sign_up_validator.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/pages/home.dart';
@@ -25,32 +26,47 @@ class RegistrationPageState extends State<RegistrationPage> {
     final password = _passwordController.text;
     final confirmedPassword = _confirmPasswordController.text;
 
-    if (password != confirmedPassword) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBarHelper.createSnackBar(text: 'Passwords are not the same'),
-      );
+    final errorMessage = SignUpValidator.validateSignUpFields(
+        username, password, confirmedPassword);
+
+    if (errorMessage != null) {
+      SnackBarHelper.showSnackBar(context: context, text: errorMessage);
       return;
     }
 
-    bool userExists = await DatabaseHelper.instance.checkUserExisting(username);
-    if (userExists) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBarHelper.createSnackBar(text: 'Username already taken'),
-      );
-      return;
-    }
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
 
-    await DatabaseHelper.instance.insertUser(username, password);
+    try {
+      bool userExists =
+          await DatabaseHelper.instance.checkUserExisting(username);
 
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
+      if (userExists) {
+        Navigator.pop(context);
+        SnackBarHelper.showSnackBar(
+            context: context, text: 'Username already exists with this name');
+        return;
+      }
+
+      await DatabaseHelper.instance.insertUser(username, password);
+
+      Navigator.pop(context);
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      SnackBarHelper.showSnackBar(
+          context: context, text: 'An error occurred: $e');
     }
   }
 
@@ -72,17 +88,10 @@ class RegistrationPageState extends State<RegistrationPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Create an Account',
-                style: Theme.of(context).textTheme.headlineMedium,
+                'Finance Tracker',
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Registration',
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: const Color.fromARGB(197, 0, 0, 0),
-                    ),
-              ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 48),
               CustomTextField(
                 controller: _usernameController,
                 labelText: 'Username',
