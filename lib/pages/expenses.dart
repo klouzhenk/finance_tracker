@@ -8,9 +8,10 @@ class ExpensePage extends StatelessWidget {
   ExpensePage({super.key});
 
   final List<Expense> expenses = [
-    Expense('Food', 50, 'Food and drinks', '2024-11-12'),
-    Expense('Transport', 30, 'Bus ticket', '2024-11-12'),
-    Expense('Entertainment', 20, 'Movie ticket', '2024-11-12'),
+    Expense('Coca Cola', 50, ExpenseCategory.food, DateTime(2024, 11, 15)),
+    Expense('City Card', 30, ExpenseCategory.transport, DateTime(2024, 11, 15)),
+    Expense(
+        'Cinema', 20, ExpenseCategory.entertainment, DateTime(2024, 11, 15)),
   ];
 
   List<PieChartSectionData> _prepareChartData() {

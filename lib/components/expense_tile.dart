@@ -19,7 +19,7 @@ class ExpenseTile extends StatelessWidget {
       children: [
         ListTile(
           title: Text('Category: ${expense.category}'),
-          subtitle: Text('Date: ${expense.date}'),
+          subtitle: Text('Date: ${expense.formattedDate}'),
         ),
       ],
     );
