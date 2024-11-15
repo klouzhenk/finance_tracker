@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Expense {
+  final int id;
   final String title;
   final double amount;
   final ExpenseCategory category;
   final DateTime date;
+  final String? description;
 
-  Expense(this.title, this.amount, this.category, this.date);
+  Expense(
+    this.id,
+    this.title,
+    this.amount,
+    this.category,
+    this.date, {
+    this.description,
+  });
 
   String get formattedDate => DateFormat('dd.MM.yyyy').format(date);
 
@@ -39,23 +48,23 @@ class Expense {
   Color get categoryColor {
     switch (category) {
       case ExpenseCategory.food:
-        return Colors.green[100]!;
+        return Colors.green[200]!;
       case ExpenseCategory.transport:
-        return Colors.blue[100]!;
+        return Colors.blue[200]!;
       case ExpenseCategory.entertainment:
-        return Colors.purple[100]!;
+        return Colors.purple[200]!;
       case ExpenseCategory.housing:
-        return Colors.orange[100]!;
+        return Colors.orange[200]!;
       case ExpenseCategory.clothingAndAccessories:
-        return Colors.pink[100]!;
+        return Colors.pink[200]!;
       case ExpenseCategory.health:
-        return Colors.red[100]!;
+        return Colors.red[200]!;
       case ExpenseCategory.education:
-        return Colors.yellow[100]!;
+        return Colors.yellow[200]!;
       case ExpenseCategory.pets:
-        return Colors.brown[100]!;
+        return Colors.brown[200]!;
       case ExpenseCategory.gifts:
-        return Colors.teal[100]!;
+        return Colors.teal[200]!;
       case ExpenseCategory.other:
         return Colors.grey[200]!;
     }

@@ -1,5 +1,6 @@
 import 'package:finance_tracker/components/expense_tile.dart';
 import 'package:finance_tracker/components/pie_chart.dart';
+import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +9,27 @@ class ExpensePage extends StatelessWidget {
   ExpensePage({super.key});
 
   final List<Expense> expenses = [
-    Expense('Coca Cola', 50, ExpenseCategory.food, DateTime(2024, 11, 15)),
-    Expense('City Card', 30, ExpenseCategory.transport, DateTime(2024, 11, 15)),
     Expense(
-        'Cinema', 20, ExpenseCategory.entertainment, DateTime(2024, 11, 15)),
+      0,
+      'Coca Cola',
+      0.5,
+      ExpenseCategory.food,
+      DateTime(2024, 11, 15),
+    ),
+    Expense(
+      1,
+      'City Card',
+      2,
+      ExpenseCategory.transport,
+      DateTime(2024, 11, 15),
+    ),
+    Expense(
+      2,
+      'Cinema',
+      4,
+      ExpenseCategory.entertainment,
+      DateTime(2024, 11, 15),
+    ),
   ];
 
   List<PieChartSectionData> _prepareChartData() {
@@ -24,16 +42,18 @@ class ExpensePage extends StatelessWidget {
     }
 
     data.forEach((title, amount) {
+      Expense expense = expenses.firstWhere((e) => e.title == title);
+
       sections.add(
         PieChartSectionData(
           value: amount,
-          color: Colors.primaries[sections.length % Colors.primaries.length],
+          color: expense.categoryColor.adjustSaturation(1).darken(),
           title: amount.toString(),
           radius: 60,
           titleStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
         ),
       );
@@ -63,8 +83,7 @@ class ExpensePage extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Заокруглення контейнера
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),

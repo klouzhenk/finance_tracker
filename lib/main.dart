@@ -29,11 +29,12 @@ class MyApp extends StatelessWidget {
             fontSize: 40,
             fontWeight: FontWeight.w900,
           ),
-          bodyMedium: const TextStyle(color: AppColors.textColor),
           labelLarge: const TextStyle(
             color: AppColors.accentColor,
             fontWeight: FontWeight.bold,
           ),
+          bodyMedium: const TextStyle(color: AppColors.textColor, fontSize: 18),
+          bodyLarge: const TextStyle(color: AppColors.textColor, fontSize: 18),
         ),
       ),
       home: ExpensePage(),

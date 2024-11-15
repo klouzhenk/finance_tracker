@@ -1,3 +1,4 @@
+import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,8 @@ class ExpenseTile extends StatelessWidget {
           horizontal: 16,
           vertical: 0,
         ),
+        iconColor: expense.categoryColor.darken(0.3),
+        collapsedIconColor: expense.categoryColor.darken(0.3),
         backgroundColor: expense.categoryColor,
         collapsedBackgroundColor: expense.categoryColor,
         shape: const Border(),
@@ -31,8 +34,18 @@ class ExpenseTile extends StatelessWidget {
               vertical: 0,
               horizontal: 16,
             ),
-            title: Text('Category: ${expense.categoryName}'),
-            subtitle: Text('Date: ${expense.formattedDate}'),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Category: ${expense.categoryName}'),
+                const SizedBox(height: 8),
+                Text(expense.description?.isEmpty ?? true
+                    ? 'Description: -'
+                    : 'Description: ${expense.description}'),
+                const SizedBox(height: 8),
+                Text('Date: ${expense.formattedDate}'),
+              ],
+            ),
           ),
         ],
       ),
