@@ -51,13 +51,34 @@ class ExpensePage extends StatelessWidget {
         child: Column(
           children: [
             ExpensePieChart(sections: _prepareChartData()),
-            ListView.builder(
+            ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: expenses.length,
               itemBuilder: (context, index) {
-                return ExpenseTile(expense: expenses[index]);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 0,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.circular(16), // Заокруглення контейнера
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: ExpenseTile(expense: expenses[index]),
+                  ),
+                );
               },
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
             ),
           ],
         ),

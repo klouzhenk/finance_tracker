@@ -8,20 +8,34 @@ class ExpenseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 0,
+        ),
+        backgroundColor: expense.categoryColor,
+        collapsedBackgroundColor: expense.categoryColor,
+        shape: const Border(),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(expense.title),
+            Text('\$${expense.amount.toStringAsFixed(2)}'),
+          ],
+        ),
         children: [
-          Text(expense.title),
-          Text('\$${expense.amount.toStringAsFixed(2)}'),
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 0,
+              horizontal: 16,
+            ),
+            title: Text('Category: ${expense.categoryName}'),
+            subtitle: Text('Date: ${expense.formattedDate}'),
+          ),
         ],
       ),
-      children: [
-        ListTile(
-          title: Text('Category: ${expense.categoryName}'),
-          subtitle: Text('Date: ${expense.formattedDate}'),
-        ),
-      ],
     );
   }
 }

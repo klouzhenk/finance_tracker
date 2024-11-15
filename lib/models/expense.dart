@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Expense {
@@ -32,8 +33,31 @@ class Expense {
         return "Gifts";
       case ExpenseCategory.other:
         return "Other";
-      default:
-        return "Unknown";
+    }
+  }
+
+  Color get categoryColor {
+    switch (category) {
+      case ExpenseCategory.food:
+        return Colors.green[100]!;
+      case ExpenseCategory.transport:
+        return Colors.blue[100]!;
+      case ExpenseCategory.entertainment:
+        return Colors.purple[100]!;
+      case ExpenseCategory.housing:
+        return Colors.orange[100]!;
+      case ExpenseCategory.clothingAndAccessories:
+        return Colors.pink[100]!;
+      case ExpenseCategory.health:
+        return Colors.red[100]!;
+      case ExpenseCategory.education:
+        return Colors.yellow[100]!;
+      case ExpenseCategory.pets:
+        return Colors.brown[100]!;
+      case ExpenseCategory.gifts:
+        return Colors.teal[100]!;
+      case ExpenseCategory.other:
+        return Colors.grey[200]!;
     }
   }
 }
