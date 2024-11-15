@@ -2,6 +2,8 @@ import 'package:finance_tracker/components/expense_tile.dart';
 import 'package:finance_tracker/components/pie_chart.dart';
 import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/models/expense.dart';
+import 'package:finance_tracker/pages/add_expense.dart';
+import 'package:finance_tracker/styles/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -35,20 +37,20 @@ class ExpensePage extends StatelessWidget {
   List<PieChartSectionData> _prepareChartData() {
     List<PieChartSectionData> sections = [];
     double totalAmount = 0;
-    Map<String, double> data = {};
+    Map<int, String> data = {};
     for (var expense in expenses) {
-      data[expense.title] = expense.amount;
+      data[expense.id] = expense.title;
       totalAmount += expense.amount;
     }
 
-    data.forEach((title, amount) {
-      Expense expense = expenses.firstWhere((e) => e.title == title);
+    data.forEach((id, title) {
+      Expense expense = expenses.firstWhere((e) => e.id == id);
 
       sections.add(
         PieChartSectionData(
-          value: amount,
+          value: expense.amount,
           color: expense.categoryColor.adjustSaturation(1).darken(),
-          title: amount.toString(),
+          title: expense.amount.toString(),
           radius: 60,
           titleStyle: const TextStyle(
             fontSize: 16,
@@ -71,6 +73,36 @@ class ExpensePage extends StatelessWidget {
         child: Column(
           children: [
             ExpensePieChart(sections: _prepareChartData()),
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 28),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Expenses',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add_box),
+                      iconSize: 40,
+                      color: AppColors.accentColor,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddExpensePage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
