@@ -18,6 +18,17 @@ class Expense {
     this.description,
   });
 
+  factory Expense.fromMap(Map<String, dynamic> map) {
+    return Expense(
+      map['id'],
+      map['title'],
+      map['amount'],
+      ExpenseCategoryExtension.fromString(map['category']),
+      DateTime.parse(map['date']),
+      description: map['description'],
+    );
+  }
+
   String get formattedDate => DateFormat('dd.MM.yyyy').format(date);
 
   String get categoryName {

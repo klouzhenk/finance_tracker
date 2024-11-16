@@ -1,3 +1,4 @@
+import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -73,13 +74,19 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getUserExpenses(int userId) async {
+  Future<List<Expense>> getUserExpenses(int userId) async {
     final db = await instance.database;
-    return await db.query(
+    final result = await db.query(
       'expense',
       where: 'user_id = ?',
       whereArgs: [userId],
     );
+
+    if (result.isNotEmpty) {
+      return result.map((e) => Expense.fromMap(e)).toList();
+    }
+
+    return [];
   }
 
   Future<void> deleteUser(int userId) async {
