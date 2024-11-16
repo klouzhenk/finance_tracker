@@ -1,10 +1,16 @@
 import 'package:finance_tracker/pages/expenses.dart';
+import 'package:finance_tracker/pages/login.dart';
 import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,7 +43,7 @@ class MyApp extends StatelessWidget {
           bodyLarge: const TextStyle(color: AppColors.textColor, fontSize: 18),
         ),
       ),
-      home: ExpensePage(),
+      home: const LoginPage(),
     );
   }
 }

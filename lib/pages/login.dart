@@ -2,20 +2,23 @@ import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
+import 'package:finance_tracker/pages/expenses.dart';
 import 'package:finance_tracker/pages/home.dart';
 import 'package:finance_tracker/pages/registration.dart';
+import 'package:finance_tracker/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  LoginPageState createState() {
-    return LoginPageState();
+  ConsumerState<LoginPage> createState() {
+    return _LoginPageState();
   }
 }
 
-class LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -25,21 +28,20 @@ class LoginPageState extends State<LoginPage> {
 
     if (username.isEmpty || password.isEmpty) {
       SnackBarHelper.showSnackBar(
-          context: context, text: 'Please enter both username and password');
+          context, 'Please enter both username and password');
       return;
     }
 
-    final isValidUser =
-        await DatabaseHelper.instance.checkUser(username, password);
+    final user = await DatabaseHelper.instance.getUser(username, password);
 
-    if (isValidUser) {
+    if (user != null) {
+      ref.read(userIdProvider.notifier).state = user.id;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => ExpensePage()),
       );
     } else {
-      SnackBarHelper.showSnackBar(
-          context: context, text: 'Invalid username or password');
+      SnackBarHelper.showSnackBar(context, 'Invalid username or password');
     }
   }
 

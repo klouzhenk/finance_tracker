@@ -1,3 +1,4 @@
+import 'package:finance_tracker/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -41,7 +42,7 @@ class DatabaseHelper {
         title TEXT NOT NULL,
         description TEXT,
         amount REAL NOT NULL,
-        category_id INTEGER,
+        category TEXT,
         date TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
       )
@@ -57,7 +58,7 @@ class DatabaseHelper {
   }
 
   Future<int> insertExpense(int userId, String title, String description,
-      double amount, int categoryId, String date) async {
+      double amount, String category, String date) async {
     final db = await instance.database;
     return await db.insert(
       'expense',
@@ -66,7 +67,7 @@ class DatabaseHelper {
         'title': title,
         'description': description,
         'amount': amount,
-        'category_id': categoryId,
+        'category': category,
         'date': date,
       },
     );
@@ -98,6 +99,20 @@ class DatabaseHelper {
       whereArgs: [username, password],
     );
     return result.isNotEmpty;
+  }
+
+  Future<User?> getUser(String username, String password) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'user',
+      where: 'username = ? AND password = ?',
+      whereArgs: [username, password],
+    );
+
+    if (result.isNotEmpty) {
+      return User.fromMap(result.first);
+    }
+    return null;
   }
 
   Future<bool> checkUserExisting(String username) async {

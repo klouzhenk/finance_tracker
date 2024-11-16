@@ -13,9 +13,9 @@ class SnackBarHelper {
     );
   }
 
-  static void showSnackBar({
-    required BuildContext context,
-    required String text,
+  static void showSnackBar(
+    BuildContext context,
+    String text, {
     SnackBarType snackBarType = SnackBarType.error,
   }) {
     ScaffoldMessenger.of(context).clearSnackBars();

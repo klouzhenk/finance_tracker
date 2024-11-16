@@ -30,7 +30,7 @@ class RegistrationPageState extends State<RegistrationPage> {
         username, password, confirmedPassword);
 
     if (errorMessage != null) {
-      SnackBarHelper.showSnackBar(context: context, text: errorMessage);
+      SnackBarHelper.showSnackBar(context, errorMessage);
       return;
     }
 
@@ -49,7 +49,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       if (userExists) {
         Navigator.pop(context);
         SnackBarHelper.showSnackBar(
-            context: context, text: 'Username already exists with this name');
+            context, 'Username already exists with this name');
         return;
       }
 
@@ -65,8 +65,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       }
     } catch (e) {
       Navigator.pop(context);
-      SnackBarHelper.showSnackBar(
-          context: context, text: 'An error occurred: $e');
+      SnackBarHelper.showSnackBar(context, 'An error occurred: $e');
     }
   }
 

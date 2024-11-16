@@ -71,6 +71,22 @@ class Expense {
   }
 }
 
+class ExpenseDto {
+  final String title;
+  final double amount;
+  final ExpenseCategory category;
+  final DateTime date;
+  final String? description;
+
+  ExpenseDto(
+    this.title,
+    this.amount,
+    this.category,
+    this.date, {
+    this.description,
+  });
+}
+
 enum ExpenseCategory {
   food,
   transport,
@@ -82,4 +98,56 @@ enum ExpenseCategory {
   pets,
   gifts,
   other
+}
+
+extension ExpenseCategoryExtension on ExpenseCategory {
+  String toReadableString() {
+    switch (this) {
+      case ExpenseCategory.food:
+        return 'Food';
+      case ExpenseCategory.transport:
+        return 'Transport';
+      case ExpenseCategory.entertainment:
+        return 'Entertainment';
+      case ExpenseCategory.housing:
+        return 'Housing';
+      case ExpenseCategory.clothingAndAccessories:
+        return 'Clothing and Accessories';
+      case ExpenseCategory.health:
+        return 'Health';
+      case ExpenseCategory.education:
+        return 'Education';
+      case ExpenseCategory.pets:
+        return 'Pets';
+      case ExpenseCategory.gifts:
+        return 'Gifts';
+      case ExpenseCategory.other:
+        return 'Other';
+    }
+  }
+
+  static ExpenseCategory fromString(String value) {
+    switch (value.toLowerCase()) {
+      case 'food':
+        return ExpenseCategory.food;
+      case 'transport':
+        return ExpenseCategory.transport;
+      case 'entertainment':
+        return ExpenseCategory.entertainment;
+      case 'housing':
+        return ExpenseCategory.housing;
+      case 'clothing and accessories':
+        return ExpenseCategory.clothingAndAccessories;
+      case 'health':
+        return ExpenseCategory.health;
+      case 'education':
+        return ExpenseCategory.education;
+      case 'pets':
+        return ExpenseCategory.pets;
+      case 'gifts':
+        return ExpenseCategory.gifts;
+      default:
+        return ExpenseCategory.other;
+    }
+  }
 }
