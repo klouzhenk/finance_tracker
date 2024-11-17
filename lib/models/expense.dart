@@ -85,8 +85,8 @@ class Expense {
 class ExpenseDto {
   final String title;
   final double amount;
-  final ExpenseCategory category;
-  final DateTime date;
+  final String category;
+  final String date;
   final String? description;
 
   ExpenseDto(

@@ -1,30 +1,44 @@
 import 'package:finance_tracker/components/expense_tile.dart';
 import 'package:finance_tracker/components/pie_chart.dart';
-import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/pages/add_expense.dart';
+import 'package:finance_tracker/providers/expenses_provider.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
 import 'package:finance_tracker/styles/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExpensePage extends ConsumerWidget {
-  ExpensePage({super.key});
+class ExpensePage extends ConsumerStatefulWidget {
+  const ExpensePage({super.key});
 
+  @override
+  ConsumerState<ExpensePage> createState() {
+    return _ExpensePageState();
+  }
+}
+
+class _ExpensePageState extends ConsumerState<ExpensePage> {
   int? _userId;
 
-  Future<List<PieChartSectionData>> _prepareChartData() async {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _userId = ref.watch(userIdProvider.notifier).state;
+      if (_userId != null) {
+        ref.read(expenseProvider.notifier).loadExpenses(_userId!);
+      }
+    });
+  }
+
+  Future<List<PieChartSectionData>> _prepareChartData(
+      List<Expense> expenses) async {
     List<PieChartSectionData> sections = [];
-    List<Expense>? expenses;
-    double totalAmount = 0;
 
-    if (_userId != null) {
-      expenses = await DatabaseHelper.instance.getUserExpenses(_userId!);
-    }
-
-    if (expenses == null || expenses.isEmpty) {
+    if (expenses.isEmpty) {
       return List.empty();
     }
 
@@ -48,8 +62,8 @@ class ExpensePage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    _userId = ref.watch(userIdProvider.notifier).state;
+  Widget build(BuildContext context) {
+    final expenses = ref.watch(expenseProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,19 +73,24 @@ class ExpensePage extends ConsumerWidget {
         child: Column(
           children: [
             FutureBuilder<List<PieChartSectionData>>(
-              future: _prepareChartData(),
+              future: _prepareChartData(expenses),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Показуємо індикатор завантаження, поки чекаємо на дані
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  // Обробка помилки, якщо щось пішло не так
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  // Якщо немає даних
-                  return Center(child: Text('No expenses available'));
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(40),
+                      child: Icon(
+                        Icons.speaker_notes_off_outlined,
+                        color: Color.fromARGB(255, 104, 149, 106),
+                        size: 160,
+                      ),
+                    ),
+                  );
                 } else {
-                  // Відображаємо графік
                   return ExpensePieChart(sections: snapshot.data!);
                 }
               },
@@ -83,7 +102,6 @@ class ExpensePage extends ConsumerWidget {
                     const EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       'Expenses',
@@ -99,34 +117,28 @@ class ExpensePage extends ConsumerWidget {
                           MaterialPageRoute(
                             builder: (context) => const AddExpensePage(),
                           ),
-                        );
+                        ).then((_) {
+                          if (_userId != null) {
+                            ref
+                                .read(expenseProvider.notifier)
+                                .loadExpenses(_userId!);
+                          }
+                        });
                       },
                     ),
                   ],
                 ),
               ),
             ),
-            FutureBuilder<List<Expense>>(
-              future: DatabaseHelper.instance.getUserExpenses(_userId!),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No expenses available'));
-                } else {
-                  List<Expense> expenses = snapshot.data!;
-                  return ListView.separated(
+            expenses.isEmpty
+                ? const SizedBox.shrink()
+                : ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: expenses.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 0,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
@@ -145,10 +157,7 @@ class ExpensePage extends ConsumerWidget {
                     },
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 12),
-                  );
-                }
-              },
-            ),
+                  ),
           ],
         ),
       ),

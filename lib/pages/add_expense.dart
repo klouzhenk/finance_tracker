@@ -3,6 +3,7 @@ import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/models/expense.dart';
+import 'package:finance_tracker/providers/expenses_provider.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,16 +41,18 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
         return;
       }
 
-      await DatabaseHelper.instance.insertExpense(
-        _userId!,
+      final expense = ExpenseDto(
         title,
-        description,
         amount,
         _selectedCategory,
         _selectedDate.toIso8601String(),
+        description: description,
       );
 
-      SnackBarHelper.showSnackBar(context, 'Expense added successfully!');
+      ref.read(expenseProvider.notifier).addExpense(expense, _userId!);
+
+      SnackBarHelper.showSnackBar(context, 'Expense added successfully!',
+          snackBarType: SnackBarType.success);
       _clearInputFields();
     } else {
       SnackBarHelper.showSnackBar(context, 'Please fix the errors in the form');
