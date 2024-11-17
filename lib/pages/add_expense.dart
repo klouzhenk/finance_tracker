@@ -1,6 +1,5 @@
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
-import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/providers/expenses_provider.dart';

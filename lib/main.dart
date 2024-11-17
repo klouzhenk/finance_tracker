@@ -1,4 +1,3 @@
-import 'package:finance_tracker/pages/expenses.dart';
 import 'package:finance_tracker/pages/login.dart';
 import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';

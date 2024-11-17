@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/drawer.dart';
 import 'package:finance_tracker/components/expense_tile.dart';
 import 'package:finance_tracker/components/pie_chart.dart';
 import 'package:finance_tracker/helper/color.dart';
@@ -69,6 +70,7 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
       appBar: AppBar(
         title: const Text('Daily Expenses'),
       ),
+      drawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [

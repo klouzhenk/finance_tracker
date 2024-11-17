@@ -3,7 +3,6 @@ import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/pages/expenses.dart';
-import 'package:finance_tracker/pages/home.dart';
 import 'package:finance_tracker/pages/registration.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       ref.read(userIdProvider.notifier).state = user.id;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ExpensePage()),
+        MaterialPageRoute(builder: (context) => const ExpensePage()),
       );
     } else {
       SnackBarHelper.showSnackBar(context, 'Invalid username or password');
