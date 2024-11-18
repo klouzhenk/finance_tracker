@@ -25,6 +25,7 @@ class ExpensePage extends ConsumerStatefulWidget {
 class _ExpensePageState extends ConsumerState<ExpensePage> {
   int? _userId;
   DateTime _currentDate = DateTime.now();
+  double _totalSumOfExpenses = 0;
 
   @override
   void initState() {
@@ -55,27 +56,48 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
 
   Future<List<PieChartSectionData>> _prepareChartData(
       List<Expense> expenses) async {
-    List<PieChartSectionData> sections = [];
+    _totalSumOfExpenses = 0;
 
     if (expenses.isEmpty) {
       return List.empty();
     }
 
+    final Map<String, double> categoryTotals = {};
     for (var expense in expenses) {
-      sections.add(
-        PieChartSectionData(
-          value: expense.amount,
-          color: expense.categoryColor.adjustSaturation(1).darken(),
-          title: expense.amount.toString(),
-          radius: 60,
-          titleStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 255, 255, 255),
-          ),
-        ),
+      categoryTotals.update(
+        expense.categoryName,
+        (currentTotal) => currentTotal + expense.amount,
+        ifAbsent: () => expense.amount,
       );
     }
+
+    _totalSumOfExpenses =
+        categoryTotals.values.fold(0, (sum, amount) => sum + amount);
+
+    final sections = categoryTotals.entries.map((entry) {
+      final categoryName = entry.key;
+      final categoryTotal = entry.value;
+
+      final percentFromOverallAmount =
+          categoryTotal / _totalSumOfExpenses * 100;
+      final categoryColor = expenses
+          .firstWhere((expense) => expense.categoryName == categoryName)
+          .categoryColor;
+
+      return PieChartSectionData(
+        value: categoryTotal,
+        color: categoryColor.adjustSaturation(1).darken(),
+        title: percentFromOverallAmount > 5
+            ? '${percentFromOverallAmount.toStringAsFixed(2)}%'
+            : '',
+        radius: 60,
+        titleStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Color.fromARGB(255, 255, 255, 255),
+        ),
+      );
+    }).toList();
 
     return sections;
   }
@@ -91,7 +113,7 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
       drawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 20), // Нижній паддінг
+          padding: const EdgeInsets.only(bottom: 20),
           child: Column(
             children: [
               FutureBuilder<List<PieChartSectionData>>(
