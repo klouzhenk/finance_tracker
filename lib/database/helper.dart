@@ -88,6 +88,26 @@ class DatabaseHelper {
     return [];
   }
 
+  Future<List<Expense>> getUserExpensesByDate(int userId, DateTime date) async {
+    final db = await instance.database;
+
+    final startDate = DateTime(date.year, date.month, date.day);
+    final endDate = startDate.add(const Duration(days: 1));
+
+    // Запит до бази даних
+    final result = await db.query(
+      'expense',
+      where: 'user_id = ? AND date >= ? AND date < ?',
+      whereArgs: [
+        userId,
+        startDate.toIso8601String(),
+        endDate.toIso8601String()
+      ],
+    );
+
+    return result.map((e) => Expense.fromMap(e)).toList();
+  }
+
   Future<void> deleteUser(int userId) async {
     final db = await instance.database;
     await db.delete(
