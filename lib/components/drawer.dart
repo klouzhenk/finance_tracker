@@ -39,7 +39,7 @@ class AppDrawer extends StatelessWidget {
               height: 140,
               child: DrawerHeader(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                  padding: const EdgeInsets.only(left: 16),
                   child: Text(
                     'Menu',
                     style: Theme.of(context)

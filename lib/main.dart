@@ -20,13 +20,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.primaryColor,
           surface: AppColors.backgroundColor,
           primary: AppColors.primaryColor,
           onPrimary: AppColors.buttonTextColor,
         ),
-        useMaterial3: true,
         textTheme:
             GoogleFonts.latoTextTheme(Theme.of(context).textTheme).copyWith(
           headlineLarge: const TextStyle(
@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
           bodyMedium: const TextStyle(color: AppColors.textColor, fontSize: 18),
           bodyLarge: const TextStyle(color: AppColors.textColor, fontSize: 18),
         ),
+        dividerTheme: const DividerThemeData(color: Colors.transparent),
       ),
       home: const LoginPage(),
     );
