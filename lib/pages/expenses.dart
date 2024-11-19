@@ -222,19 +222,13 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: ExpenseTile(expense: expenses[index]),
+                          child: ExpenseTile(
+                            expense: expenses[index],
+                            onDelete: () {
+                              setState(() {
+                                expenses.removeAt(index);
+                              });
+                            },
                           ),
                         );
                       },

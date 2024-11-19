@@ -117,6 +117,15 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> deleteExpense(int expenseId) async {
+    final db = await instance.database;
+    await db.delete(
+      'expense',
+      where: 'id = ?',
+      whereArgs: [expenseId],
+    );
+  }
+
   Future<bool> checkUser(String username, String password) async {
     final db = await instance.database;
     final result = await db.query(

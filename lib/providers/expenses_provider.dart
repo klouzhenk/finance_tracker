@@ -5,13 +5,11 @@ import '../models/expense.dart';
 class ExpenseNotifier extends StateNotifier<List<Expense>> {
   ExpenseNotifier() : super([]);
 
-  // Завантажуємо всі витрати для користувача
   Future<void> loadExpenses(int userId) async {
     final expenses = await DatabaseHelper.instance.getUserExpenses(userId);
     state = expenses;
   }
 
-  // Додаємо нову витрату і оновлюємо стан
   Future<void> addExpense(ExpenseDto expense, int userId) async {
     await DatabaseHelper.instance.insertExpense(
       userId,
@@ -28,6 +26,14 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     final expenses =
         await DatabaseHelper.instance.getUserExpensesByDate(userId, date);
     state = expenses;
+  }
+
+  Future<void> deleteExpenseById(int expenseId) async {
+    try {
+      await DatabaseHelper.instance.deleteExpense(expenseId);
+    } catch (e) {
+      print('Error deleting expense: $e');
+    }
   }
 }
 
