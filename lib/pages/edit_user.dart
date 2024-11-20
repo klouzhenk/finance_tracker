@@ -27,7 +27,7 @@ class EditUserPage extends ConsumerWidget {
                 showDialog(
                   context: context,
                   builder: (context) => _EditUsernameDialog(
-                    currentUsername: user!.username,
+                    currentUsername: user.username,
                     onSave: (newUsername) {
                       ref
                           .read(userInfoProvider.notifier)
