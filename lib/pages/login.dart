@@ -35,6 +35,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     if (user != null) {
       ref.read(userIdProvider.notifier).state = user.id;
+      ref
+          .read(userInfoProvider.notifier)
+          .loadUser(user.id, user.username, user.password);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const ExpensePage()),

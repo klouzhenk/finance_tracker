@@ -94,7 +94,6 @@ class DatabaseHelper {
     final startDate = DateTime(date.year, date.month, date.day);
     final endDate = startDate.add(const Duration(days: 1));
 
-    // Запит до бази даних
     final result = await db.query(
       'expense',
       where: 'user_id = ? AND date >= ? AND date < ?',
@@ -148,6 +147,31 @@ class DatabaseHelper {
       return User.fromMap(result.first);
     }
     return null;
+  }
+
+  Future<int> updateUser(int userId,
+      {String? username, String? password}) async {
+    final db = await instance.database;
+    final updateData = <String, dynamic>{};
+    if (username != null) {
+      updateData['username'] = username;
+    }
+    if (password != null) {
+      updateData['password'] = password;
+    }
+
+    if (updateData.isEmpty) {
+      return 0;
+    }
+
+    final result = await db.update(
+      'user',
+      updateData,
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+
+    return result;
   }
 
   Future<bool> checkUserExisting(String username) async {

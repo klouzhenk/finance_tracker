@@ -1,4 +1,5 @@
 import 'package:finance_tracker/components/drawer_list_tile.dart';
+import 'package:finance_tracker/pages/edit_user.dart';
 import 'package:finance_tracker/pages/login.dart';
 import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class AppDrawer extends StatelessWidget {
   void editUserData(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
+      MaterialPageRoute(builder: (context) => const EditUserPage()),
     );
   }
 
