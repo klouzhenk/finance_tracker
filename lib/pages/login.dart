@@ -18,11 +18,11 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   Future<void> onLogin() async {
-    final username = _emailController.text;
+    final username = _usernameController.text;
     final password = _passwordController.text;
 
     if (username.isEmpty || password.isEmpty) {
@@ -49,7 +49,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -69,8 +69,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               const SizedBox(height: 48),
               CustomTextField(
-                controller: _emailController,
-                labelText: 'Email',
+                controller: _usernameController,
+                labelText: 'Username',
               ),
               const SizedBox(height: 10),
               CustomTextField(
