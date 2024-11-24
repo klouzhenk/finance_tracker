@@ -32,7 +32,7 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _userId = ref.watch(userIdProvider.notifier).state;
+      _userId = ref.watch(userProvider)?.id;
       if (_userId != null) {
         ref
             .read(expenseProvider.notifier)

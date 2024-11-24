@@ -85,7 +85,7 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
 
   @override
   Widget build(BuildContext context) {
-    _userId = ref.watch(userIdProvider.notifier).state;
+    _userId = ref.watch(userProvider)?.id;
     final categories = ExpenseCategory.values.map((ExpenseCategory category) {
       return category.toReadableString();
     }).toList();

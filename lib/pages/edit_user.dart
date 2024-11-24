@@ -8,7 +8,7 @@ class EditUserPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userInfoProvider);
+    final user = ref.watch(userProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +30,7 @@ class EditUserPage extends ConsumerWidget {
                     currentUsername: user.username,
                     onSave: (newUsername) {
                       ref
-                          .read(userInfoProvider.notifier)
+                          .read(userProvider.notifier)
                           .updateUsername(newUsername);
                     },
                   ),
@@ -50,7 +50,7 @@ class EditUserPage extends ConsumerWidget {
                   builder: (context) => _EditPasswordDialog(
                     onSave: (newPassword) {
                       ref
-                          .read(userInfoProvider.notifier)
+                          .read(userProvider.notifier)
                           .updatePassword(newPassword);
                     },
                   ),

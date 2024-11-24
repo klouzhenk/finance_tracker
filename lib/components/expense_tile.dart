@@ -43,7 +43,9 @@ class ExpenseTile extends ConsumerWidget {
       },
       onDismissed: (direction) {
         onDelete();
-        ref.read(expenseProvider.notifier).deleteExpenseById(expense.id);
+        ref
+            .read(expenseProvider.notifier)
+            .deleteExpenseById(expense.id, context);
         SnackBarHelper.showSnackBar(
             context, 'This expense (${expense.title}) was deleted.',
             snackBarType: SnackBarType.success);

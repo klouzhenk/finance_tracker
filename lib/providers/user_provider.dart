@@ -9,6 +9,10 @@ class UserNotifier extends StateNotifier<User?> {
     state = User(id: id, username: username, password: password);
   }
 
+  void logout() {
+    state = null;
+  }
+
   Future<void> updateUsername(String newUsername) async {
     if (state == null) {
       return;
@@ -26,10 +30,24 @@ class UserNotifier extends StateNotifier<User?> {
     await DatabaseHelper.instance.updateUser(state!.id, password: newPassword);
     loadUser(state!.id, state!.username, newPassword);
   }
+
+  Future<bool> deleteUser() async {
+    if (state == null) {
+      return false;
+    }
+
+    await DatabaseHelper.instance.deleteUser(state!.id);
+    return true;
+  }
+
+  Future<bool> validatePassword(String password) async {
+    if (state == null) {
+      return false;
+    }
+    return state!.password == password;
+  }
 }
 
-final userInfoProvider = StateNotifierProvider<UserNotifier, User?>(
+final userProvider = StateNotifierProvider<UserNotifier, User?>(
   (ref) => UserNotifier(),
 );
-
-final userIdProvider = StateProvider<int?>((ref) => null);
