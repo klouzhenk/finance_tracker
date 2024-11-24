@@ -5,12 +5,18 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final bool obscureText;
+  final TextInputType keyboardType;
+  final int minLines;
+  final int maxLines;
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.labelText,
     this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.minLines = 1,
+    this.maxLines = 1,
   });
 
   @override
@@ -18,7 +24,11 @@ class CustomTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      minLines: minLines,
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         labelText: labelText,
         labelStyle: const TextStyle(
           color: AppColors.primaryColor,

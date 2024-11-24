@@ -3,7 +3,7 @@ import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/helper/sign_up_validator.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/database/helper.dart';
-import 'package:finance_tracker/pages/home.dart';
+import 'package:finance_tracker/pages/expenses.dart';
 import 'package:finance_tracker/pages/login.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +61,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const ExpensePage()),
         );
       }
     } catch (e) {

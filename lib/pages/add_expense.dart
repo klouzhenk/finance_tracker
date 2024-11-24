@@ -1,5 +1,6 @@
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
+import 'package:finance_tracker/helper/date.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/providers/expenses_provider.dart';
@@ -106,36 +107,63 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Date: ${_selectedDate.toLocal()}".split(' ')[0]),
-                  ElevatedButton(
-                    onPressed: () => _selectDate(context),
-                    child: const Text("Select date"),
+                  Expanded(
+                    child: DropdownButtonFormField(
+                      value: _selectedCategory,
+                      items: categories
+                          .map((category) => DropdownMenuItem(
+                                value: category,
+                                child: Text(category),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCategory = value.toString();
+                        });
+                      },
+                      decoration: const InputDecoration(labelText: "Category"),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: CustomTextField(
+                      controller: _amountController,
+                      labelText: "Amount",
+                      keyboardType: TextInputType.number,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
               CustomTextField(
-                  controller: _amountController, labelText: "Amount"),
-              const SizedBox(height: 10),
-              DropdownButtonFormField(
-                value: _selectedCategory,
-                items: categories
-                    .map((category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(category),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value.toString();
-                  });
-                },
-                decoration: const InputDecoration(labelText: "Category"),
+                controller: _descriptionController,
+                labelText: "Description",
+                minLines: 3,
+                maxLines: 5,
               ),
               const SizedBox(height: 10),
-              CustomTextField(
-                  controller: _descriptionController, labelText: "Description"),
-              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.56,
+                    child: Text(
+                      "Date: ${DateHelper.dateToText(_selectedDate)}",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => _selectDate(context),
+                      child: const Text("Select date"),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
               Center(
                 child:
                     FormButtonSubmit(text: "Submit", onPressed: _saveExpense),
