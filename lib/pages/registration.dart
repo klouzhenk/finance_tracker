@@ -47,6 +47,7 @@ class RegistrationPageState extends State<RegistrationPage> {
           await DatabaseHelper.instance.checkUserExisting(username);
 
       if (userExists) {
+        if (!mounted) return;
         Navigator.pop(context);
         SnackBarHelper.showSnackBar(
             context, 'Username already exists with this name');
@@ -54,7 +55,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       }
 
       await DatabaseHelper.instance.insertUser(username, password);
-
+      if (!mounted) return;
       Navigator.pop(context);
 
       if (mounted) {

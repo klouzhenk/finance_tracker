@@ -37,11 +37,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       ref
           .read(userProvider.notifier)
           .loadUser(user.id, user.username, user.password);
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const ExpensePage()),
       );
     } else {
+      if (!mounted) return;
       SnackBarHelper.showSnackBar(context, 'Invalid username or password');
     }
   }

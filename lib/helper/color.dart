@@ -4,10 +4,10 @@ extension ColorChanger on Color {
   Color darken([double factor = 0.1]) {
     if (factor > 1 || factor < 0) return this;
 
-    final double r = this.red * (1 - factor);
-    final double g = this.green * (1 - factor);
-    final double b = this.blue * (1 - factor);
-    return Color.fromRGBO(r.toInt(), g.toInt(), b.toInt(), this.opacity);
+    final double r = red * (1 - factor);
+    final double g = green * (1 - factor);
+    final double b = blue * (1 - factor);
+    return Color.fromRGBO(r.toInt(), g.toInt(), b.toInt(), opacity);
   }
 
   Color adjustSaturation([double saturationFactor = 0.1]) {

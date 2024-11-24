@@ -1,5 +1,3 @@
-import 'package:finance_tracker/helper/snack_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../database/helper.dart';
 import '../models/expense.dart';
@@ -30,11 +28,11 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     state = expenses;
   }
 
-  Future<void> deleteExpenseById(int expenseId, BuildContext context) async {
+  Future<void> deleteExpenseById(int expenseId) async {
     try {
       await DatabaseHelper.instance.deleteExpense(expenseId);
     } catch (e) {
-      SnackBarHelper.showSnackBar(context, 'Error deleting expense: $e');
+      // SnackBarHelper.showSnackBar(context, 'Error deleting expense: $e');
     }
   }
 }

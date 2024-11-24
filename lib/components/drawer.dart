@@ -79,11 +79,13 @@ class AppDrawer extends ConsumerWidget {
 
       if (isValid) {
         await ref.read(userProvider.notifier).deleteUser();
+        if (!context.mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       } else {
+        if (!context.mounted) return;
         showDialog(
           context: context,
           builder: (BuildContext context) {
