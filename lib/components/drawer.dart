@@ -1,3 +1,5 @@
+import 'package:finance_tracker/components/alert_dialog.dart';
+import 'package:finance_tracker/components/delete_alert_dialog.dart';
 import 'package:finance_tracker/components/drawer_list_tile.dart';
 import 'package:finance_tracker/pages/edit_user.dart';
 import 'package:finance_tracker/pages/expenses.dart';
@@ -40,35 +42,7 @@ class AppDrawer extends ConsumerWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Confirm delete'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Input your password for confirmation'),
-              const SizedBox(height: 16),
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (passwordController.text.isNotEmpty) {
-                  Navigator.pop(context, true);
-                }
-              },
-              child: const Text('Delete'),
-            ),
-          ],
-        );
+        return AlertDialogForDelete(passwordController);
       },
     );
 
@@ -89,18 +63,7 @@ class AppDrawer extends ConsumerWidget {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: const Text('Password is not correct'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
+            return const AppAlertDialog('Error', 'Password is not correct');
           },
         );
       }
@@ -125,18 +88,18 @@ class AppDrawer extends ConsumerWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headlineLarge!
-                        .copyWith(color: AppColors.darkAccentColor),
+                        .copyWith(color: const Color.fromARGB(169, 1, 18, 2)),
                   ),
                 ),
               ),
             ),
             DrawerListTile(
-              'Сторінка з витратами',
+              'Page with expenses',
               Icons.bar_chart,
               () => showPageWithExpenses(context),
             ),
             DrawerListTile(
-              'Update user data',
+              'Edit user data',
               Icons.edit,
               () => editUserData(context),
             ),

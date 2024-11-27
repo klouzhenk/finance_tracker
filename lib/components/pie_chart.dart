@@ -13,11 +13,12 @@ class ExpensePieChart extends StatelessWidget {
       child: SizedBox(
         height: 250,
         child: PieChart(
+          swapAnimationDuration: const Duration(seconds: 1),
           PieChartData(
             sections: sections,
             borderData: FlBorderData(show: false),
             sectionsSpace: 0,
-            centerSpaceRadius: 50,
+            centerSpaceRadius: 40,
           ),
         ),
       ),

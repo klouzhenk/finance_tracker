@@ -59,25 +59,25 @@ class Expense {
   Color get categoryColor {
     switch (category) {
       case ExpenseCategory.food:
-        return Colors.green[200]!;
+        return Colors.green[400]!;
       case ExpenseCategory.transport:
-        return Colors.blue[200]!;
+        return Colors.blue[400]!;
       case ExpenseCategory.entertainment:
-        return Colors.purple[200]!;
+        return Colors.purple[400]!;
       case ExpenseCategory.housing:
-        return Colors.orange[200]!;
+        return Colors.orange[400]!;
       case ExpenseCategory.clothingAndAccessories:
-        return Colors.pink[200]!;
+        return Colors.pink[400]!;
       case ExpenseCategory.health:
-        return Colors.red[200]!;
+        return Colors.red[400]!;
       case ExpenseCategory.education:
-        return Colors.yellow[200]!;
+        return Colors.yellow[400]!;
       case ExpenseCategory.pets:
-        return Colors.brown[200]!;
+        return Colors.lime[400]!;
       case ExpenseCategory.gifts:
-        return Colors.teal[200]!;
+        return Colors.teal[400]!;
       case ExpenseCategory.other:
-        return Colors.grey[200]!;
+        return Colors.grey[400]!;
     }
   }
 }

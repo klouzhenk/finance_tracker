@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/app_bar.dart';
 import 'package:finance_tracker/components/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,9 +12,7 @@ class EditUserPage extends ConsumerWidget {
     final user = ref.watch(userProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit User'),
-      ),
+      appBar: const CustomAppBar("Edit user information"),
       drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

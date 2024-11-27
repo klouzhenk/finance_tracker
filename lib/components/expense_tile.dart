@@ -67,7 +67,7 @@ class ExpenseTile extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(expense.title),
-              Text('\$${expense.amount.toStringAsFixed(2)}'),
+              Text('₴ ${expense.amount.toStringAsFixed(2)}'),
             ],
           ),
           children: [

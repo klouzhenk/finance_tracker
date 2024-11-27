@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/app_bar.dart';
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/helper/date.dart';
@@ -5,11 +6,14 @@ import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/providers/expenses_provider.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
+import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddExpensePage extends ConsumerStatefulWidget {
-  const AddExpensePage({super.key});
+  const AddExpensePage(this.selectedDate, {super.key});
+
+  final DateTime selectedDate;
 
   @override
   ConsumerState<AddExpensePage> createState() => _AddExpensePageState();
@@ -21,7 +25,7 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String _selectedCategory = ExpenseCategory.food.toReadableString();
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
   int? _userId;
 
   void _saveExpense() async {
@@ -62,7 +66,7 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
@@ -85,6 +89,12 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _selectedDate = widget.selectedDate; // Ініціалізація з параметра
+  }
+
+  @override
   Widget build(BuildContext context) {
     _userId = ref.watch(userProvider)?.id;
     final categories = ExpenseCategory.values.map((ExpenseCategory category) {
@@ -92,9 +102,7 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
     }).toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add new expense"),
-      ),
+      appBar: const CustomAppBar("Add new expense"),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -158,7 +166,13 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => _selectDate(context),
-                      child: const Text("Select date"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.accentColor,
+                      ),
+                      child: const Text(
+                        "Select date",
+                        style: TextStyle(color: AppColors.buttonTextColor),
+                      ),
                     ),
                   ),
                 ],

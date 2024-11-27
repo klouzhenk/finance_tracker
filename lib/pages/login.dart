@@ -65,7 +65,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Finance Tracker',
+                'Expense Tracker',
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 48),

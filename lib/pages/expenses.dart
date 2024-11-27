@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/app_bar.dart';
 import 'package:finance_tracker/components/drawer.dart';
 import 'package:finance_tracker/components/expense_tile.dart';
 import 'package:finance_tracker/components/icon_btn.dart';
@@ -87,14 +88,17 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
       return PieChartSectionData(
         value: categoryTotal,
         color: categoryColor.adjustSaturation(1).darken(),
-        title: percentFromOverallAmount > 5
-            ? '${percentFromOverallAmount.toStringAsFixed(2)}%'
+        title: percentFromOverallAmount > 3
+            ? '${percentFromOverallAmount.toStringAsFixed(1)}%'
             : '',
-        radius: 60,
-        titleStyle: const TextStyle(
+        radius: 80,
+        titleStyle: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-          color: Color.fromARGB(255, 255, 255, 255),
+          color: categoryColor
+              .adjustSaturation(1)
+              .darken()
+              .textColorBasedOnBackground(),
         ),
       );
     }).toList();
@@ -107,9 +111,8 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
     final expenses = ref.watch(expenseProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Expenses for ${DateHelper.dateToText(_currentDate)}'),
-      ),
+      appBar:
+          CustomAppBar('Expenses for ${DateHelper.dateToText(_currentDate)}'),
       drawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
@@ -198,7 +201,8 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const AddExpensePage(),
+                              builder: (context) =>
+                                  AddExpensePage(_currentDate),
                             ),
                           ).then((_) {
                             if (_userId != null) {

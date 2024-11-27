@@ -3,7 +3,6 @@ import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/helper/sign_up_validator.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/database/helper.dart';
-import 'package:finance_tracker/pages/expenses.dart';
 import 'package:finance_tracker/pages/login.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +60,7 @@ class RegistrationPageState extends State<RegistrationPage> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ExpensePage()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       }
     } catch (e) {
@@ -88,7 +87,7 @@ class RegistrationPageState extends State<RegistrationPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Finance Tracker',
+                'Expense Tracker',
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 48),

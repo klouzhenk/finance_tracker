@@ -17,4 +17,8 @@ extension ColorChanger on Color {
     HSLColor adjustedColor = hslColor.withSaturation(saturationFactor);
     return adjustedColor.toColor();
   }
+
+  Color textColorBasedOnBackground() {
+    return this.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+  }
 }
