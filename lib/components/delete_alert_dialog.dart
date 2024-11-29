@@ -1,3 +1,4 @@
+import 'package:finance_tracker/components/alert_dialog_title.dart';
 import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -9,15 +10,7 @@ class AlertDialogForDelete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Confirm delete',
-        style: TextStyle(
-          color: Color.fromARGB(200, 255, 255, 255),
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
-        ),
-      ),
+      title: const AlertDialogTitle('Confirm delete'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -60,7 +53,9 @@ class AlertDialogForDelete extends StatelessWidget {
           child: const Text(
             'Delete',
             style: TextStyle(
-              color: AppColors.darkAccentColor,
+              color: AppColors.accentColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
               letterSpacing: 1,
             ),
           ),

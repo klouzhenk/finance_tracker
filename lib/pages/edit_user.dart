@@ -1,5 +1,7 @@
+import 'package:finance_tracker/components/alert_dialog_title.dart';
 import 'package:finance_tracker/components/app_bar.dart';
 import 'package:finance_tracker/components/drawer.dart';
+import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
@@ -37,11 +39,9 @@ class EditUserPage extends ConsumerWidget {
               },
             ),
             const SizedBox(height: 16),
-
-            // Поле для пароля
             _EditableField(
               title: 'Password',
-              currentValue: '•••••••',
+              currentValue: user.password,
               isPassword: true,
               onEdit: () {
                 showDialog(
@@ -86,21 +86,44 @@ class _EditableField extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
-                style: Theme.of(context).textTheme.bodyMedium,
+                'Edit ${title.toLowerCase()}',
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      color: AppColors.accentColor,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                currentValue,
-                style: Theme.of(context).textTheme.bodySmall,
-                overflow: TextOverflow.ellipsis,
-              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    'Current ${title.toLowerCase()}: ',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.w400),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    currentValue,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontWeight: FontWeight.w300),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              )
             ],
           ),
         ),
         IconButton(
           onPressed: onEdit,
-          icon: const Icon(Icons.edit),
+          icon: const Icon(
+            Icons.edit,
+            size: 28,
+            color: AppColors.darkAccentColor,
+          ),
         ),
       ],
     );
@@ -138,22 +161,46 @@ class _EditUsernameDialogState extends State<_EditUsernameDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Edit Username'),
-      content: TextField(
-        controller: _controller,
-        decoration: const InputDecoration(labelText: 'Username'),
-      ),
+      title: const AlertDialogTitle('Edit Username'),
+      backgroundColor: AppColors.accentColor,
+      content: Column(mainAxisSize: MainAxisSize.min, children: [
+        const SizedBox(height: 20),
+        TextField(
+          controller: _controller,
+          style: const TextStyle(color: AppColors.buttonTextColor),
+          decoration: const InputDecoration(
+            labelText: 'Username',
+            labelStyle: TextStyle(color: Color.fromARGB(160, 255, 255, 255)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Color.fromARGB(160, 255, 255, 255), width: 0.0),
+            ),
+            border: OutlineInputBorder(),
+          ),
+        ),
+      ]),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: AppColors.buttonTextColor),
+          ),
         ),
         ElevatedButton(
           onPressed: () {
             widget.onSave(_controller.text.trim());
             Navigator.pop(context);
           },
-          child: const Text('Save'),
+          child: const Text(
+            'Save',
+            style: TextStyle(
+              color: AppColors.accentColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 1,
+            ),
+          ),
         ),
       ],
     );
@@ -207,25 +254,46 @@ class _EditPasswordDialogState extends State<_EditPasswordDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Edit Password'),
+      title: const AlertDialogTitle('Edit password'),
+      backgroundColor: AppColors.accentColor,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const SizedBox(height: 16),
           TextField(
             controller: _newPasswordController,
             obscureText: true,
-            decoration: const InputDecoration(labelText: 'New Password'),
+            style: const TextStyle(color: AppColors.buttonTextColor),
+            decoration: const InputDecoration(
+              labelText: 'New password',
+              labelStyle: TextStyle(color: Color.fromARGB(160, 255, 255, 255)),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(160, 255, 255, 255), width: 0.0),
+              ),
+              border: OutlineInputBorder(),
+            ),
           ),
+          const SizedBox(height: 16),
           TextField(
             controller: _confirmPasswordController,
             obscureText: true,
-            decoration: const InputDecoration(labelText: 'Confirm Password'),
+            style: const TextStyle(color: AppColors.buttonTextColor),
+            decoration: const InputDecoration(
+              labelText: 'Confirm Password',
+              labelStyle: TextStyle(color: Color.fromARGB(160, 255, 255, 255)),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(160, 255, 255, 255), width: 0.0),
+              ),
+              border: OutlineInputBorder(),
+            ),
           ),
           if (_errorText != null) ...[
             const SizedBox(height: 8),
             Text(
               _errorText!,
-              style: const TextStyle(color: Colors.red),
+              style: const TextStyle(color: Color.fromARGB(255, 246, 190, 186)),
             ),
           ],
         ],
@@ -233,11 +301,25 @@ class _EditPasswordDialogState extends State<_EditPasswordDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(
+              color: AppColors.buttonTextColor,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ),
         ElevatedButton(
           onPressed: _save,
-          child: const Text('Save'),
+          child: const Text(
+            'Save',
+            style: TextStyle(
+              color: AppColors.accentColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 1,
+            ),
+          ),
         ),
       ],
     );
