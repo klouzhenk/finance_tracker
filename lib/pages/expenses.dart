@@ -168,7 +168,30 @@ class _ExpensePageState extends ConsumerState<ExpensePage> {
                             onPressed: () => _changeDate(false),
                           ),
                           Expanded(
-                              child: ExpensePieChart(sections: snapshot.data!)),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 16),
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 1,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    '₴ ${_totalSumOfExpenses.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                ExpensePieChart(sections: snapshot.data!),
+                              ],
+                            ),
+                          ),
                           AppIconBtn(
                             Icons.keyboard_arrow_right,
                             40,
