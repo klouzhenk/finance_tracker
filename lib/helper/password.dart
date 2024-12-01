@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
 
-class PasswordHasher {
+class PasswordHelper {
   static String generateSalt([int length = 16]) {
     final random = Random.secure();
     final values = List<int>.generate(length, (i) => random.nextInt(256));

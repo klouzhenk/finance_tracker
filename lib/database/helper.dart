@@ -1,3 +1,4 @@
+import 'package:finance_tracker/helper/password.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/models/user.dart';
 import 'package:sqflite/sqflite.dart';
@@ -32,7 +33,8 @@ class DatabaseHelper {
       CREATE TABLE user (
         id TEXT PRIMARY KEY,
         username TEXT NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        salt TEXT NOT NULL
       )
     ''');
 
@@ -52,12 +54,17 @@ class DatabaseHelper {
 
   Future<void> insertUser(String username, String password) async {
     final db = await instance.database;
+
+    final salt = PasswordHelper.generateSalt();
+    final hashedPassword = PasswordHelper.hashPassword(password, salt);
+
     await db.insert(
       'user',
       {
         'id': _createNewId(),
         'username': username,
-        'password': password,
+        'password': hashedPassword,
+        'salt': salt,
       },
     );
   }
@@ -134,37 +141,59 @@ class DatabaseHelper {
 
   Future<bool> checkUser(String username, String password) async {
     final db = await instance.database;
-    final result = await db.query(
+
+    final user = await db.query(
       'user',
-      where: 'username = ? AND password = ?',
-      whereArgs: [username, password],
+      columns: ['password', 'salt'],
+      where: 'username = ?',
+      whereArgs: [username],
     );
-    return result.isNotEmpty;
+
+    if (user.isEmpty) return false;
+
+    final storedHashedPassword = user.first['password'] as String;
+    final salt = user.first['salt'] as String;
+
+    return PasswordHelper.verifyPassword(password, salt, storedHashedPassword);
   }
 
   Future<User?> getUser(String username, String password) async {
     final db = await instance.database;
     final result = await db.query(
       'user',
-      where: 'username = ? AND password = ?',
-      whereArgs: [username, password],
+      columns: ['id', 'username', 'password', 'salt'],
+      where: 'username = ?',
+      whereArgs: [username],
     );
 
-    if (result.isNotEmpty) {
-      return User.fromMap(result.first);
-    }
-    return null;
+    if (result.isEmpty) return null;
+
+    final userMap = result.first;
+    final storedHashedPassword = userMap['password'] as String;
+    final storedSalt = userMap['salt'] as String;
+
+    final isValidPassword = PasswordHelper.verifyPassword(
+        password, storedSalt, storedHashedPassword);
+    if (!isValidPassword) return null;
+
+    return User.fromMap(userMap);
   }
 
   Future<int> updateUser(String userId,
       {String? username, String? password}) async {
     final db = await instance.database;
     final updateData = <String, dynamic>{};
+
     if (username != null) {
       updateData['username'] = username;
     }
+
     if (password != null) {
-      updateData['password'] = password;
+      final salt = PasswordHelper.generateSalt();
+      final hashedPassword = PasswordHelper.hashPassword(password, salt);
+
+      updateData['password'] = hashedPassword;
+      updateData['salt'] = salt;
     }
 
     if (updateData.isEmpty) {
