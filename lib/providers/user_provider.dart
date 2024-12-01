@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class UserNotifier extends StateNotifier<User?> {
   UserNotifier() : super(null);
 
-  void loadUser(int id, String username, String password) {
+  void loadUser(String id, String username, String password) {
     state = User(id: id, username: username, password: password);
   }
 

@@ -2,6 +2,7 @@ import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -29,7 +30,7 @@ class DatabaseHelper {
   Future _createDB(Database db, int version) async {
     await db.execute('''
       CREATE TABLE user (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id TEXT PRIMARY KEY,
         username TEXT NOT NULL,
         password TEXT NOT NULL
       )
@@ -37,8 +38,8 @@ class DatabaseHelper {
 
     await db.execute('''
       CREATE TABLE expense (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
         title TEXT NOT NULL,
         description TEXT,
         amount REAL NOT NULL,
@@ -53,16 +54,21 @@ class DatabaseHelper {
     final db = await instance.database;
     await db.insert(
       'user',
-      {'username': username, 'password': password},
+      {
+        'id': _createNewId(),
+        'username': username,
+        'password': password,
+      },
     );
   }
 
-  Future<int> insertExpense(int userId, String title, String description,
+  Future<int> insertExpense(String userId, String title, String description,
       double amount, String category, String date) async {
     final db = await instance.database;
     return await db.insert(
       'expense',
       {
+        'id': _createNewId(),
         'user_id': userId,
         'title': title,
         'description': description,
@@ -73,7 +79,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<Expense>> getUserExpenses(int userId) async {
+  Future<List<Expense>> getUserExpenses(String userId) async {
     final db = await instance.database;
     final result = await db.query(
       'expense',
@@ -88,7 +94,8 @@ class DatabaseHelper {
     return [];
   }
 
-  Future<List<Expense>> getUserExpensesByDate(int userId, DateTime date) async {
+  Future<List<Expense>> getUserExpensesByDate(
+      String userId, DateTime date) async {
     final db = await instance.database;
 
     final startDate = DateTime(date.year, date.month, date.day);
@@ -107,7 +114,7 @@ class DatabaseHelper {
     return result.map((e) => Expense.fromMap(e)).toList();
   }
 
-  Future<void> deleteUser(int userId) async {
+  Future<void> deleteUser(String userId) async {
     final db = await instance.database;
     await db.delete(
       'user',
@@ -116,7 +123,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> deleteExpense(int expenseId) async {
+  Future<void> deleteExpense(String expenseId) async {
     final db = await instance.database;
     await db.delete(
       'expense',
@@ -149,7 +156,7 @@ class DatabaseHelper {
     return null;
   }
 
-  Future<int> updateUser(int userId,
+  Future<int> updateUser(String userId,
       {String? username, String? password}) async {
     final db = await instance.database;
     final updateData = <String, dynamic>{};
@@ -187,5 +194,10 @@ class DatabaseHelper {
   Future<void> close() async {
     final db = await instance.database;
     db.close();
+  }
+
+  String _createNewId() {
+    const uuid = Uuid();
+    return uuid.v4();
   }
 }

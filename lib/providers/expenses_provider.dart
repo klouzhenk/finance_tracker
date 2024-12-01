@@ -5,12 +5,12 @@ import '../models/expense.dart';
 class ExpenseNotifier extends StateNotifier<List<Expense>> {
   ExpenseNotifier() : super([]);
 
-  Future<void> loadExpenses(int userId) async {
+  Future<void> loadExpenses(String userId) async {
     final expenses = await DatabaseHelper.instance.getUserExpenses(userId);
     state = expenses;
   }
 
-  Future<void> addExpense(ExpenseDto expense, int userId) async {
+  Future<void> addExpense(ExpenseDto expense, String userId) async {
     await DatabaseHelper.instance.insertExpense(
       userId,
       expense.title,
@@ -22,13 +22,13 @@ class ExpenseNotifier extends StateNotifier<List<Expense>> {
     await loadExpensesByDate(userId, DateTime.parse(expense.date));
   }
 
-  Future<void> loadExpensesByDate(int userId, DateTime date) async {
+  Future<void> loadExpensesByDate(String userId, DateTime date) async {
     final expenses =
         await DatabaseHelper.instance.getUserExpensesByDate(userId, date);
     state = expenses;
   }
 
-  Future<void> deleteExpenseById(int expenseId) async {
+  Future<void> deleteExpenseById(String expenseId) async {
     try {
       await DatabaseHelper.instance.deleteExpense(expenseId);
     } catch (e) {

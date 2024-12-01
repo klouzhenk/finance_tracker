@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Expense {
-  final int id;
+  final String id;
   final String title;
   final double amount;
   final ExpenseCategory category;

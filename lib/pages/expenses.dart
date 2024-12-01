@@ -24,7 +24,7 @@ class ExpensePage extends ConsumerStatefulWidget {
 }
 
 class _ExpensePageState extends ConsumerState<ExpensePage> {
-  int? _userId;
+  String? _userId;
   DateTime _currentDate = DateTime.now();
   double _totalSumOfExpenses = 0;
 

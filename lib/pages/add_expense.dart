@@ -26,7 +26,7 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
   final TextEditingController _descriptionController = TextEditingController();
   String _selectedCategory = ExpenseCategory.food.toReadableString();
   late DateTime _selectedDate;
-  int? _userId;
+  String? _userId;
 
   void _saveExpense() async {
     if (_formKey.currentState!.validate()) {
