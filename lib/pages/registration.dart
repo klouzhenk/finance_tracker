@@ -2,11 +2,12 @@ import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
 import 'package:finance_tracker/helper/sign_up_validator.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
-import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/pages/login.dart';
+import 'package:finance_tracker/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegistrationPage extends StatefulWidget {
+class RegistrationPage extends ConsumerStatefulWidget {
   const RegistrationPage({super.key});
 
   @override
@@ -15,7 +16,7 @@ class RegistrationPage extends StatefulWidget {
   }
 }
 
-class RegistrationPageState extends State<RegistrationPage> {
+class RegistrationPageState extends ConsumerState<RegistrationPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -24,6 +25,7 @@ class RegistrationPageState extends State<RegistrationPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
     final confirmedPassword = _confirmPasswordController.text;
+    final userService = ref.read(userProvider.notifier);
 
     final errorMessage = SignUpValidator.validateSignUpFields(
         username, password, confirmedPassword);
@@ -42,8 +44,7 @@ class RegistrationPageState extends State<RegistrationPage> {
     );
 
     try {
-      bool userExists =
-          await DatabaseHelper.instance.checkUserExisting(username);
+      bool userExists = await userService.checkUserExisiting(username);
 
       if (userExists) {
         if (!mounted) return;
@@ -53,7 +54,7 @@ class RegistrationPageState extends State<RegistrationPage> {
         return;
       }
 
-      await DatabaseHelper.instance.insertUser(username, password);
+      userService.addUser(username, password);
       if (!mounted) return;
       Navigator.pop(context);
 

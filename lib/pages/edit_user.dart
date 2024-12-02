@@ -23,12 +23,12 @@ class EditUserPage extends ConsumerWidget {
           children: [
             _EditableField(
               title: 'Username',
-              currentValue: user!.username,
+              currentValue: user?.username,
               onEdit: () {
                 showDialog(
                   context: context,
                   builder: (context) => _EditUsernameDialog(
-                    currentUsername: user.username,
+                    currentUsername: user != null ? user.username : '',
                     onSave: (newUsername) {
                       ref
                           .read(userProvider.notifier)
@@ -41,7 +41,7 @@ class EditUserPage extends ConsumerWidget {
             const SizedBox(height: 16),
             _EditableField(
               title: 'Password',
-              currentValue: user.password,
+              currentValue: null,
               isPassword: true,
               onEdit: () {
                 showDialog(
@@ -65,7 +65,7 @@ class EditUserPage extends ConsumerWidget {
 
 class _EditableField extends StatelessWidget {
   final String title;
-  final String currentValue;
+  final String? currentValue;
   final bool isPassword;
   final VoidCallback onEdit;
 
@@ -104,14 +104,16 @@ class _EditableField extends StatelessWidget {
                         .copyWith(fontWeight: FontWeight.w400),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    currentValue,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontWeight: FontWeight.w300),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  currentValue != null
+                      ? Text(
+                          currentValue!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontWeight: FontWeight.w300),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : const Icon(Icons.visibility_off),
                 ],
               )
             ],

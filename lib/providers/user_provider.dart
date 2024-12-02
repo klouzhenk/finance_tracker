@@ -9,6 +9,18 @@ class UserNotifier extends StateNotifier<User?> {
     state = User(id: id, username: username, password: password);
   }
 
+  Future<bool> checkUserExisiting(String username) async {
+    return await DatabaseHelper.instance.checkUserExisting(username);
+  }
+
+  Future<void> addUser(String username, String password) async {
+    await DatabaseHelper.instance.insertUser(username, password);
+  }
+
+  Future<User?> getUser(String username, String password) async {
+    return DatabaseHelper.instance.getUser(username, password);
+  }
+
   void logout() {
     state = null;
   }

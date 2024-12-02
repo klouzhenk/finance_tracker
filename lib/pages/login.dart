@@ -1,6 +1,5 @@
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
-import 'package:finance_tracker/database/helper.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/pages/expenses.dart';
 import 'package:finance_tracker/pages/registration.dart';
@@ -24,6 +23,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> onLogin() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
+    final userService = ref.read(userProvider.notifier);
 
     if (username.isEmpty || password.isEmpty) {
       SnackBarHelper.showSnackBar(
@@ -31,12 +31,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       return;
     }
 
-    final user = await DatabaseHelper.instance.getUser(username, password);
+    final user = await userService.getUser(username, password);
 
     if (user != null) {
-      ref
-          .read(userProvider.notifier)
-          .loadUser(user.id, user.username, user.password);
+      userService.loadUser(user.id, user.username, user.password);
       if (!mounted) return;
       Navigator.pushReplacement(
         context,

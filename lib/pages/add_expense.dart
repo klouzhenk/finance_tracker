@@ -91,7 +91,7 @@ class _AddExpensePageState extends ConsumerState<AddExpensePage> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.selectedDate; // Ініціалізація з параметра
+    _selectedDate = widget.selectedDate;
   }
 
   @override

@@ -77,7 +77,7 @@ class Expense {
       case ExpenseCategory.gifts:
         return Colors.teal[400]!;
       case ExpenseCategory.other:
-        return Colors.grey[400]!;
+        return Colors.indigo;
     }
   }
 }
