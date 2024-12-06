@@ -1,5 +1,5 @@
+import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/pages/login.dart';
-import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,6 +1,5 @@
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/providers/expenses_provider.dart';
-import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/helper/color.dart';

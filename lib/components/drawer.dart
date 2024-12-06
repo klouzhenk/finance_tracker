@@ -1,11 +1,11 @@
 import 'package:finance_tracker/components/alert_dialog.dart';
 import 'package:finance_tracker/components/delete_alert_dialog.dart';
 import 'package:finance_tracker/components/drawer_list_tile.dart';
+import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/pages/edit_user.dart';
 import 'package:finance_tracker/pages/expenses.dart';
 import 'package:finance_tracker/pages/login.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
-import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -9,7 +9,6 @@ import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/pages/add_expense.dart';
 import 'package:finance_tracker/providers/expenses_provider.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
-import 'package:finance_tracker/styles/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

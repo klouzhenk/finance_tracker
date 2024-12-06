@@ -1,4 +1,4 @@
-import 'package:finance_tracker/styles/colors.dart';
+import 'package:finance_tracker/helper/color.dart';
 import 'package:flutter/material.dart';
 
 class FormButtonSubmit extends StatelessWidget {

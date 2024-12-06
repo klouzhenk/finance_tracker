@@ -1,12 +1,12 @@
 import 'package:finance_tracker/components/app_bar.dart';
 import 'package:finance_tracker/components/form_btn.dart';
 import 'package:finance_tracker/components/form_text_field.dart';
+import 'package:finance_tracker/helper/color.dart';
 import 'package:finance_tracker/helper/date.dart';
 import 'package:finance_tracker/helper/snack_bar.dart';
 import 'package:finance_tracker/models/expense.dart';
 import 'package:finance_tracker/providers/expenses_provider.dart';
 import 'package:finance_tracker/providers/user_provider.dart';
-import 'package:finance_tracker/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
